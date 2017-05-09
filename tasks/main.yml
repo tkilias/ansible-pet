@@ -1,0 +1,14 @@
+---
+# tasks file for ansible-pet
+
+- name: "Install peco"
+  include: "peco.yml"
+  vars:
+    bin_dir: "/usr/local/bin"
+    peco_version: "v0.5.1"
+
+- name: "Install pet"
+  include: "pet.yml"
+  vars:
+    bin_dir: "/usr/local/bin"
+    pet_version: "0.1.0"

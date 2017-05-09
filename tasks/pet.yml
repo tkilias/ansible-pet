@@ -1,0 +1,35 @@
+- name: download pet source
+  get_url:
+    url=https://github.com/knqyf263/pet/releases/download/v{{ pet_version }}/pet_{{ pet_version }}_linux_amd64.zip
+    dest="/tmp/pet_linux_amd64.zip"
+
+- name: remove tmp dir for peco, if exists
+  file:
+    path: "/tmp/pet_linux_amd64"
+    state: absent
+
+- name: create tmp dir for peco
+  file:
+    path: "/tmp/pet_linux_amd64"
+    state: directory
+    mode: 0755
+
+- name: extract pet source
+  unarchive:
+    src="/tmp/pet_linux_amd64.zip"
+    dest="/tmp/pet_linux_amd64"
+    copy=no
+
+- name: install pet
+  shell: >
+    {{ item }}
+    chdir="/tmp/pet_linux_amd64"
+    creates="{{ bin_dir }}/pet"
+  with_items:
+    - cp pet {{ bin_dir }}
+
+- name: clean up tmp dir for pet
+  file:
+    path: "/tmp/pet_linux_amd64"
+    state: absent
+
